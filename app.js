@@ -1,3 +1,4 @@
+// RelayGrid demo data and interactions.
 const scenarios = [
   {
     id: "late-lithium",
