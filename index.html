@@ -3,189 +3,235 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>RelayGrid | Agent Infrastructure for Supply Chains</title>
+    <title>RelayGrid | Agent Control Plane</title>
     <link rel="stylesheet" href="./styles.css" />
   </head>
   <body>
     <div class="app-shell">
-      <header class="topbar">
+      <aside class="rail" aria-label="RelayGrid workspace">
         <div class="brand">
           <span class="brand-mark" aria-hidden="true">R</span>
           <div>
-            <p class="eyebrow">Agent infrastructure</p>
-            <h1>RelayGrid</h1>
+            <p>RelayGrid</p>
+            <span>Agent control plane</span>
           </div>
         </div>
-        <nav class="view-tabs" aria-label="Demo views">
-          <button class="tab-button active" data-view="workbench" type="button">Workbench</button>
-          <button class="tab-button" data-view="marketplace" type="button">Marketplace</button>
-          <button class="tab-button" data-view="runtime" type="button">Runtime</button>
-          <button class="tab-button" data-view="memory" type="button">Memory</button>
-          <button class="tab-button" data-view="audit" type="button">Audit</button>
+
+        <nav class="nav-stack" aria-label="Primary views">
+          <button class="nav-item active" data-view="workbench" type="button">
+            <span class="nav-glyph">W</span>
+            Workbench
+          </button>
+          <button class="nav-item" data-view="marketplace" type="button">
+            <span class="nav-glyph">A</span>
+            Agent Catalog
+          </button>
+          <button class="nav-item" data-view="runtime" type="button">
+            <span class="nav-glyph">R</span>
+            Runtime
+          </button>
+          <button class="nav-item" data-view="memory" type="button">
+            <span class="nav-glyph">M</span>
+            Memory
+          </button>
+          <button class="nav-item" data-view="audit" type="button">
+            <span class="nav-glyph">L</span>
+            Audit
+          </button>
         </nav>
-        <div class="top-actions">
-          <button class="icon-button" id="simulateButton" title="Simulate supplier delay" type="button">!</button>
-          <button class="primary-button" id="routeButton" type="button">Route task</button>
-        </div>
-      </header>
 
-      <main class="layout">
-        <aside class="sidebar" aria-label="Active workflow">
-          <section class="workflow-panel">
-            <p class="eyebrow">Active workflow</p>
-            <h2>PO-1842 supplier delay</h2>
-            <p class="workflow-copy">
-              Late lithium-cell shipment for a contracted electronics manufacturer.
-            </p>
+        <section class="scenario-block">
+          <div class="section-kicker">Exception queue</div>
+          <div class="scenario-list" id="scenarioList"></div>
+        </section>
+      </aside>
 
-            <div class="metric-list">
-              <div>
-                <span>Revenue at risk</span>
-                <strong>$418K</strong>
-              </div>
-              <div>
-                <span>Manual hours</span>
-                <strong>19.4</strong>
-              </div>
-              <div>
-                <span>ETA confidence</span>
-                <strong id="etaMetric">61%</strong>
-              </div>
-            </div>
-          </section>
+      <main class="main">
+        <header class="topbar">
+          <div>
+            <p class="section-kicker">Production workspace</p>
+            <h1 id="pageTitle">Supply-chain command center</h1>
+          </div>
+          <div class="top-actions">
+            <button class="ghost-button" id="generatePacketButton" type="button">Generate packet</button>
+            <button class="primary-button" id="routeButton" type="button">Run routing graph</button>
+          </div>
+        </header>
 
-          <section class="connector-panel">
-            <p class="eyebrow">Connected context</p>
-            <ul class="connector-list" id="connectorList" aria-label="Connected systems"></ul>
-          </section>
-        </aside>
+        <section class="status-strip" aria-label="Scenario metrics">
+          <article>
+            <span>Risk exposure</span>
+            <strong id="riskMetric">$418K</strong>
+          </article>
+          <article>
+            <span>Manual hours</span>
+            <strong id="hoursMetric">19.4</strong>
+          </article>
+          <article>
+            <span>SLA confidence</span>
+            <strong id="confidenceMetric">61%</strong>
+          </article>
+          <article>
+            <span>Agents deployed</span>
+            <strong id="deployedMetric">6</strong>
+          </article>
+          <article>
+            <span>Run state</span>
+            <strong id="runStateMetric">Ready</strong>
+          </article>
+        </section>
 
-        <section class="workspace">
-          <section class="view active" id="workbench" aria-label="Agent workbench">
-            <div class="workspace-header">
-              <div>
-                <p class="eyebrow">Live run</p>
-                <h2>Route exceptions across specialized agents</h2>
-              </div>
-              <div class="run-state">
-                <span class="state-dot"></span>
-                <span id="runStatus">Ready</span>
-              </div>
-            </div>
-
-            <div class="workbench-grid">
-              <section class="flow-map" aria-label="Agent operating layer">
-                <div class="flow-row">
-                  <article class="flow-node source-node">
-                    <span>01</span>
-                    <strong>Ingest</strong>
-                    <small>ERP, email, portals</small>
-                  </article>
-                  <article class="flow-node memory-node">
-                    <span>02</span>
-                    <strong>Compile</strong>
-                    <small>Context shards</small>
-                  </article>
-                  <article class="flow-node router-node">
-                    <span>03</span>
-                    <strong>Route</strong>
-                    <small>Policy-scoped DAG</small>
-                  </article>
+        <section class="view active" id="workbench" aria-label="Workbench">
+          <div class="view-grid workbench-grid">
+            <section class="panel scenario-panel">
+              <div class="panel-head">
+                <div>
+                  <p class="section-kicker">Active exception</p>
+                  <h2 id="scenarioTitle"></h2>
                 </div>
-                <div class="flow-row flow-row-lower">
-                  <article class="flow-node agent-node">
-                    <span>04</span>
-                    <strong>Act</strong>
-                    <small>Specialized agents</small>
-                  </article>
-                  <article class="flow-node approval-node">
-                    <span>05</span>
-                    <strong>Verify</strong>
-                    <small>Evals and gates</small>
-                  </article>
-                  <article class="flow-node audit-node">
-                    <span>06</span>
-                    <strong>Record</strong>
-                    <small>Policy and audit</small>
-                  </article>
-                </div>
-              </section>
-
-              <section class="run-panel" aria-label="Current agent run">
-                <div class="panel-heading">
-                  <p class="eyebrow">Selected agent</p>
-                  <strong id="selectedAgentName">Exception Resolver</strong>
-                </div>
-                <p id="selectedAgentCopy" class="agent-copy">
-                  Finds late shipments, checks contract terms, proposes recovery actions, and escalates only when a human decision is required.
-                </p>
-                <div class="agent-score">
-                  <span>Reliability</span>
-                  <strong id="selectedAgentScore">94</strong>
-                </div>
-                <div class="task-list" id="taskList" aria-label="Run steps"></div>
-              </section>
-            </div>
-          </section>
-
-          <section class="view" id="marketplace" aria-label="Agent marketplace">
-            <div class="workspace-header">
-              <div>
-                <p class="eyebrow">Agent marketplace</p>
-                <h2>Deploy narrow agents into paid workflows</h2>
+                <span class="severity-pill" id="severityPill"></span>
               </div>
-              <span class="view-pill">7 live agents</span>
-            </div>
-            <div class="agent-grid" id="agentGrid"></div>
-          </section>
+              <p class="lead" id="scenarioSummary"></p>
+              <div class="signal-grid" id="signalGrid"></div>
+            </section>
 
-          <section class="view" id="runtime" aria-label="Agent runtime architecture">
-            <div class="workspace-header">
-              <div>
-                <p class="eyebrow">Runtime architecture</p>
-                <h2>Control plane for agentic supply-chain execution</h2>
-              </div>
-              <span class="view-pill">Task graph active</span>
-            </div>
-            <div class="runtime-grid" id="runtimeGrid"></div>
-          </section>
-
-          <section class="view" id="memory" aria-label="Memory and context">
-            <div class="workspace-header">
-              <div>
-                <p class="eyebrow">Context layer</p>
-                <h2>Compress messy operating data into agent-ready memory</h2>
-              </div>
-              <span class="view-pill" id="tokenPill">1,480 tokens</span>
-            </div>
-            <div class="memory-grid">
-              <section class="memory-panel">
-                <div class="panel-heading">
-                  <p class="eyebrow">Compression path</p>
-                  <strong>81 sources to 7 typed shards</strong>
+            <section class="panel graph-panel">
+              <div class="panel-head">
+                <div>
+                  <p class="section-kicker">Task graph</p>
+                  <h2>Policy-scoped execution DAG</h2>
                 </div>
-                <div class="compression-bars" id="compressionBars"></div>
-              </section>
-              <section class="memory-panel">
-                <div class="panel-heading">
-                  <p class="eyebrow">Permission map</p>
-                  <strong>Least-context execution</strong>
-                </div>
-                <div class="permission-list" id="permissionList"></div>
-              </section>
-            </div>
-          </section>
-
-          <section class="view" id="audit" aria-label="Audit trail">
-            <div class="workspace-header">
-              <div>
-                <p class="eyebrow">Audit trail</p>
-                <h2>Every agent action is inspectable</h2>
+                <button class="ghost-button small" id="advanceGraphButton" type="button">Advance</button>
               </div>
-              <button class="secondary-button" id="resetButton" type="button">Reset run</button>
-            </div>
-            <div class="audit-log" id="auditLog" aria-live="polite"></div>
-          </section>
+              <div class="dag" id="dag"></div>
+            </section>
+
+            <section class="panel inspector-panel">
+              <div class="panel-head">
+                <div>
+                  <p class="section-kicker">Inspector</p>
+                  <h2 id="inspectorTitle">Run context</h2>
+                </div>
+              </div>
+              <div id="inspectorBody"></div>
+            </section>
+          </div>
+        </section>
+
+        <section class="view" id="marketplace" aria-label="Agent catalog">
+          <div class="catalog-layout">
+            <section class="panel catalog-panel">
+              <div class="panel-head">
+                <div>
+                  <p class="section-kicker">Agent catalog</p>
+                  <h2>Specialized workers with manifests</h2>
+                </div>
+                <select id="categoryFilter" aria-label="Filter agents by category"></select>
+              </div>
+              <div class="agent-grid" id="agentGrid"></div>
+            </section>
+
+            <section class="panel manifest-panel">
+              <div class="panel-head">
+                <div>
+                  <p class="section-kicker">Agent manifest</p>
+                  <h2 id="agentDetailName"></h2>
+                </div>
+                <span class="score-pill" id="agentDetailScore"></span>
+              </div>
+              <div id="agentDetail"></div>
+            </section>
+          </div>
+        </section>
+
+        <section class="view" id="runtime" aria-label="Runtime">
+          <div class="runtime-layout">
+            <section class="panel runtime-map-panel">
+              <div class="panel-head">
+                <div>
+                  <p class="section-kicker">Runtime architecture</p>
+                  <h2>Control plane and execution plane</h2>
+                </div>
+              </div>
+              <div class="runtime-map" id="runtimeMap"></div>
+            </section>
+
+            <section class="panel code-panel">
+              <div class="panel-head">
+                <div>
+                  <p class="section-kicker">Layer contract</p>
+                  <h2 id="runtimeDetailTitle"></h2>
+                </div>
+              </div>
+              <div id="runtimeDetail"></div>
+            </section>
+          </div>
+        </section>
+
+        <section class="view" id="memory" aria-label="Memory">
+          <div class="memory-layout">
+            <section class="panel">
+              <div class="panel-head">
+                <div>
+                  <p class="section-kicker">Context compiler</p>
+                  <h2>Build an agent execution packet</h2>
+                </div>
+              </div>
+              <div class="compiler-controls">
+                <label>
+                  Token budget
+                  <input id="tokenBudget" type="range" min="900" max="4200" step="100" value="1800" />
+                </label>
+                <label>
+                  Compression mode
+                  <select id="compressionMode">
+                    <option value="risk">Risk-first</option>
+                    <option value="policy">Policy-first</option>
+                    <option value="latency">Latency-first</option>
+                    <option value="cost">Cost-first</option>
+                  </select>
+                </label>
+              </div>
+              <div class="memory-shards" id="memoryShards"></div>
+            </section>
+
+            <section class="panel packet-panel">
+              <div class="panel-head">
+                <div>
+                  <p class="section-kicker">Execution packet</p>
+                  <h2 id="packetTitle">Scoped context</h2>
+                </div>
+                <button class="ghost-button small" id="copyPacketButton" type="button">Export JSON</button>
+              </div>
+              <pre id="packetOutput"></pre>
+            </section>
+          </div>
+        </section>
+
+        <section class="view" id="audit" aria-label="Audit">
+          <div class="audit-layout">
+            <section class="panel audit-panel">
+              <div class="panel-head">
+                <div>
+                  <p class="section-kicker">Audit ledger</p>
+                  <h2>Replayable agent execution</h2>
+                </div>
+                <button class="ghost-button small" id="downloadAuditButton" type="button">Download JSON</button>
+              </div>
+              <div class="audit-filters" id="auditFilters"></div>
+              <div class="audit-table" id="auditTable"></div>
+            </section>
+
+            <section class="panel code-panel">
+              <div class="panel-head">
+                <div>
+                  <p class="section-kicker">Selected event</p>
+                  <h2 id="auditDetailTitle">No event selected</h2>
+                </div>
+              </div>
+              <pre id="auditDetail"></pre>
+            </section>
+          </div>
         </section>
       </main>
     </div>

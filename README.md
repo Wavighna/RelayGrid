@@ -1,17 +1,19 @@
-# RelayGrid
+# RelayGrid demo
 
-RelayGrid is a demo for a control plane for agentic supply-chain execution.
+RelayGrid is a static demo site for a fellowship application project link. It presents a control plane for specialized AI agents in supply-chain workflows: event ingestion, context compilation, permission-scoped routing, memory compression, tool sandboxes, evaluation, and auditability.
 
-It presents an operating layer for specialized AI agents across supply-chain workflows: event ingestion, context compilation, permission-scoped routing, memory compression, evaluation, and auditability.
+The demo includes 7 operational exception scenarios, 40 specialized agents, a runtime architecture map, a memory-packet compiler, deployment actions, scoped permission tokens, and a replayable audit ledger.
 
-## Live demo
+Open the demo locally:
+
+```bash
+open index.html
+```
+
+Public hosting:
 
 https://wavighna.github.io/RelayGrid/
 
-## Repository
-
-https://github.com/Wavighna/RelayGrid
-
-## Suggested application category
+Suggested industry category:
 
 AI Infrastructure / Supply Chain Software / Enterprise Automation
